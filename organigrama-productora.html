@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}</style>
+</head>
+<body>
+<title>Organigrama Productora Nocturna</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700;800&display=swap">
+<style>
+/* Layout: organigrama lineal como el de referencia. Dirección general arriba, 8 áreas como pulseras de evento, cada una despliega su equipo en lista punteada; ficha del cargo en panel lateral. */
+:root{
+  --bg:#140D1B;
+  --glow-a:rgba(255,122,48,.30);
+  --glow-b:rgba(255,61,139,.20);
+  --surface:#1E1528;
+  --surface-2:#2A1E37;
+  --line:#47364F;
+  --fg:#F8EEF5;
+  --muted:#B7A5C1;
+  --ink:#1A0F1F;
+  --dg-bg:#050307;
+  --dg-fg:#FFFFFF;
+  --dg-muted:#B9AEC2;
+  --dg-ring:#FF7A30;
+  --focus:#FFD23F;
+  --scrim:rgba(6,3,10,.62);
+  --c-prod:#FF8A3D;
+  --c-show:#FF5AA8;
+  --c-mkt:#FFD23F;
+  --c-com:#3EDB98;
+  --c-bar:#52C8F2;
+  --c-seg:#FF6363;
+  --c-fin:#B694FF;
+  --c-per:#A8E063;
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#FFF4EC; --glow-a:rgba(255,138,61,.34); --glow-b:rgba(255,90,168,.20);
+    --surface:#FFFFFF; --surface-2:#FFE8DC; --line:#E6CFC3; --fg:#21122A; --muted:#6B5671;
+    --focus:#B5400E; --scrim:rgba(33,18,42,.42);
+    color-scheme:light;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#FFF4EC; --glow-a:rgba(255,138,61,.34); --glow-b:rgba(255,90,168,.20);
+  --surface:#FFFFFF; --surface-2:#FFE8DC; --line:#E6CFC3; --fg:#21122A; --muted:#6B5671;
+  --focus:#B5400E; --scrim:rgba(33,18,42,.42);
+  color-scheme:light;
+}
+
+*{box-sizing:border-box}
+body{
+  background:
+    radial-gradient(1100px 460px at 50% -140px, var(--glow-a), transparent 70%),
+    radial-gradient(760px 380px at 92% -80px, var(--glow-b), transparent 70%),
+    var(--bg);
+  color:var(--fg);
+  font-family:var(--f-body);
+  font-size:15px;
+  line-height:1.5;
+}
+.wrap{
+  max-width:1360px; margin:0 auto;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:32px 64px;
+}
+@media (min-width:720px){ .wrap{ padding-left:max(32px, env(safe-area-inset-left, 0px)); padding-right:max(32px, env(safe-area-inset-right, 0px)); } }
+
+.eyebrow{font:600 12px/1.2 var(--f-mono); letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin:0 0 14px}
+h1{font:800 clamp(28px,4.4vw,50px)/1.05 var(--f-display); letter-spacing:-.015em; margin:0; text-wrap:balance; max-width:18ch}
+.intro{max-width:64ch; color:var(--muted); font-size:16.5px; margin:16px 0 0}
+.intro b{color:var(--fg); font-weight:700}
+
+.controls{display:flex; flex-wrap:wrap; align-items:flex-end; gap:16px 28px; margin-top:28px}
+.ctl-label{font:600 11px/1 var(--f-mono); letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 8px; display:block}
+fieldset{border:0; margin:0; padding:0; min-width:0}
+.seg{display:flex; flex-wrap:wrap; border:1.5px solid var(--line); border-radius:16px; padding:4px; background:var(--surface); gap:2px}
+.seg label{position:relative; cursor:pointer; flex:1 1 auto}
+.seg input{position:absolute; opacity:0; inset:0; margin:0; cursor:pointer}
+.seg span{display:flex; flex-direction:column; gap:2px; padding:8px 14px; border-radius:12px; font-weight:700; font-size:14px; line-height:1.15; white-space:nowrap}
+.seg small{font:500 11px var(--f-mono); color:var(--muted)}
+.seg input:checked + span{background:var(--fg); color:var(--bg)}
+.seg input:checked + span small{color:var(--bg); opacity:.75}
+.seg input:focus-visible + span{outline:2px solid var(--focus); outline-offset:2px}
+
+.team{display:flex; align-items:baseline; gap:10px}
+.team-n{font:800 44px/1 var(--f-display); font-variant-numeric:tabular-nums; letter-spacing:-.02em}
+.team-t{font-size:14px; color:var(--muted); max-width:24ch; line-height:1.3}
+.actions{display:flex; gap:8px; margin-left:auto}
+.btn{border:1.5px solid var(--line); background:transparent; color:var(--fg); border-radius:999px; padding:9px 15px; font:700 13px/1 var(--f-body); cursor:pointer}
+.btn:hover{border-color:var(--fg)}
+.btn:focus-visible,.head:focus-visible,.role:focus-visible,.dg-btn:focus-visible,.x:focus-visible,.navb:focus-visible{outline:2px solid var(--focus); outline-offset:2px}
+
+/* ---------- Organigrama ---------- */
+.chart{margin-top:36px}
+.dg-row{display:flex; justify-content:flex-start}
+.dg{background:var(--dg-bg); color:var(--dg-fg); border-radius:14px; padding:6px 6px 10px; text-align:center; box-shadow:0 0 0 2px var(--dg-ring), 0 14px 40px -12px var(--dg-ring); min-width:220px}
+.dg-btn{display:block; width:100%; background:none; border:0; color:inherit; cursor:pointer; padding:10px 18px 6px; border-radius:10px}
+.dg-btn:hover{background:rgba(255,255,255,.07)}
+.dg-btn strong{display:block; font:800 16px/1.1 var(--f-display); letter-spacing:.02em; text-transform:uppercase}
+.dg-btn em{display:block; font-size:13px; color:var(--dg-muted); margin-top:4px}
+.dg .who{color:var(--dg-fg); border-bottom-color:rgba(255,255,255,.22)}
+.dg .who::placeholder{color:var(--dg-muted)}
+.stem{width:3px; height:20px; background:var(--fg); margin-left:22px; border-radius:2px}
+
+.areas{list-style:none; margin:0; padding:0 0 0 36px; display:flex; flex-direction:column; gap:12px}
+.area{position:relative; --ring:var(--surface); background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:10px 12px 12px}
+.area::before{content:""; position:absolute; left:-15px; top:26px; width:15px; height:3px; background:var(--fg)}
+.area::after{content:""; position:absolute; left:-15px; top:-13px; bottom:-1px; width:3px; background:var(--fg)}
+.area:first-child::after{top:-1px}
+.area:last-child::after{bottom:auto; height:42px}
+
+.head{display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; width:100%; background:none; border:0; color:inherit; cursor:pointer; padding:6px; border-radius:10px; text-align:left; font:inherit}
+.head:hover{background:var(--surface-2)}
+.band{
+  display:inline-flex; align-items:center; gap:8px; background:var(--c); color:var(--ink);
+  font:700 12px/1 var(--f-display); letter-spacing:.05em; text-transform:uppercase;
+  padding:8px 13px; border-radius:5px;
+  -webkit-mask:radial-gradient(circle 5px at 0 50%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 5px at 100% 50%,#0000 98%,#000) right/51% 100% no-repeat;
+          mask:radial-gradient(circle 5px at 0 50%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 5px at 100% 50%,#0000 98%,#000) right/51% 100% no-repeat;
+}
+.band .n{background:var(--ink); color:var(--c); border-radius:999px; padding:3px 7px; font:600 11px/1 var(--f-mono); font-variant-numeric:tabular-nums; letter-spacing:0}
+.lead{font-style:italic; font-size:13.5px; line-height:1.3}
+.chev{margin-left:auto; font:600 11px/1 var(--f-mono); color:var(--muted); white-space:nowrap; letter-spacing:.04em}
+.who{display:block; width:100%; max-width:230px; margin:4px 0 0 6px; background:transparent; border:0; border-bottom:1.5px dashed var(--line); color:var(--fg); font:700 15px/1.3 var(--f-body); padding:4px 2px}
+.who::placeholder{color:var(--muted); font-weight:500}
+.who:focus{outline:none; border-bottom-color:var(--c, var(--dg-ring)); border-bottom-style:solid}
+.who:focus-visible{outline:2px solid var(--focus); outline-offset:3px}
+
+.roles{list-style:none; margin:10px 0 0; padding:0; position:relative; display:grid; gap:2px}
+.roles::before{content:""; position:absolute; left:15px; top:14px; bottom:20px; border-left:2px dotted var(--fg); opacity:.6}
+.role{display:flex; gap:10px; align-items:flex-start; width:100%; text-align:left; background:none; border:0; color:var(--fg); padding:7px 8px 7px 6px; border-radius:9px; cursor:pointer; font:700 13.5px/1.3 var(--f-body)}
+.role:hover{background:var(--surface-2)}
+.dot{flex:none; width:20px; height:18px; display:grid; place-items:center; position:relative; z-index:1}
+.dot::before{content:""; width:12px; height:12px; border-radius:50%; background:var(--fg); box-shadow:0 0 0 3px var(--ring)}
+.role:hover .dot::before{background:var(--c)}
+.role.is-lead .dot::before{background:var(--c); border-radius:2px; transform:rotate(45deg); width:11px; height:11px}
+.role.absorbed{opacity:.62}
+.role.absorbed .dot::before{background:var(--ring); border:2px solid var(--muted); width:12px; height:12px}
+.rname{display:block}
+.meta{display:block; font:500 11px/1.35 var(--f-mono); color:var(--muted); margin-top:2px; font-variant-numeric:tabular-nums}
+.roles.open li{animation:rise .28s ease both}
+.roles.open li:nth-child(2){animation-delay:.03s}.roles.open li:nth-child(3){animation-delay:.06s}.roles.open li:nth-child(4){animation-delay:.09s}.roles.open li:nth-child(5){animation-delay:.12s}.roles.open li:nth-child(6){animation-delay:.15s}.roles.open li:nth-child(7){animation-delay:.18s}
+@keyframes rise{from{opacity:.25; transform:translateY(-4px)}to{opacity:1; transform:none}}
+
+@media (min-width:640px) and (max-width:1179px){
+  .roles{grid-template-columns:1fr 1fr; column-gap:16px}
+  .roles::before{display:none}
+}
+
+/* Árbol horizontal en pantallas anchas, como el diagrama de referencia */
+@media (min-width:1180px){
+  .dg-row{justify-content:center}
+  .stem{margin:0 auto; height:26px}
+  .areas{display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:0 14px; padding:26px 0 0; position:relative; align-items:start}
+  .areas::before{content:""; position:absolute; top:0; height:3px; left:calc((100% - 98px)/16); right:calc((100% - 98px)/16); background:var(--fg); border-radius:2px}
+  .area{background:transparent; border:0; padding:0; --ring:var(--bg); text-align:center}
+  .area::before{left:50%; top:-26px; width:3px; height:26px; transform:translateX(-50%)}
+  .area::after{display:none}
+  .head{flex-direction:column; justify-content:center; padding:8px 4px; text-align:center}
+  .band{padding:8px 12px}
+  .lead{display:flex; align-items:center; justify-content:center; min-height:2.6em}
+  .chev{margin:0}
+  .who{margin:2px auto 0; text-align:center; max-width:150px}
+  .roles{text-align:left; margin-top:12px}
+  .roles::before{left:15px}
+}
+
+/* ---------- Cuándo trabaja cada área ---------- */
+.when{margin-top:64px; padding-top:32px; border-top:1px solid var(--line)}
+h2{font:700 clamp(20px,2.4vw,26px)/1.15 var(--f-display); margin:0; text-wrap:balance; letter-spacing:-.01em}
+.when p.sub{color:var(--muted); max-width:66ch; margin:10px 0 0}
+.tscroll{overflow-x:auto; margin-top:20px; -webkit-overflow-scrolling:touch}
+.heat{border-collapse:separate; border-spacing:6px; min-width:720px; width:100%}
+.heat th{font:600 11px/1.25 var(--f-mono); letter-spacing:.06em; text-transform:uppercase; color:var(--muted); text-align:left; padding:0 4px 6px; vertical-align:bottom}
+.heat th.ph-night{color:var(--fg)}
+.heat td.al{font-weight:700; font-size:14px; white-space:nowrap; padding-right:8px}
+.heat td.al i{display:inline-block; width:10px; height:10px; border-radius:3px; background:var(--c); margin-right:8px; vertical-align:middle}
+.cell{position:relative; display:flex; align-items:center; justify-content:center; height:30px; border-radius:7px; background:color-mix(in srgb, var(--c) var(--p), transparent); font:600 10px/1 var(--f-mono); letter-spacing:.1em; color:var(--ink)}
+.lv0{background:transparent; border:1.5px dashed var(--line)}
+.lv1{--p:26%} .lv2{--p:58%} .lv3{--p:100%}
+.legend{display:flex; flex-wrap:wrap; gap:16px; margin-top:12px; font-size:13px; color:var(--muted)}
+.legend span{display:inline-flex; align-items:center; gap:8px}
+.legend .cell{width:34px; height:16px; --c:var(--fg)}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+
+/* ---------- Pie ---------- */
+.foot{margin-top:56px; display:grid; gap:28px; grid-template-columns:minmax(0,1fr)}
+@media (min-width:900px){ .foot{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)} }
+.foot h3{font:600 11px/1 var(--f-mono); letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 12px}
+.foot p{margin:0; max-width:62ch; color:var(--muted); font-size:14px}
+.foot ul{margin:0; padding-left:18px; font-size:13.5px; color:var(--muted); display:grid; gap:6px}
+.foot a{color:var(--fg); text-underline-offset:3px}
+
+/* ---------- Ficha del cargo ---------- */
+.scrim{position:fixed; inset:0; background:var(--scrim); z-index:40}
+.drawer{
+  position:fixed; z-index:41; top:0; right:0; bottom:0; width:min(460px,100%);
+  background:var(--surface); color:var(--fg); border-left:1px solid var(--line);
+  padding:calc(22px + env(safe-area-inset-top,0px)) max(24px, calc(env(safe-area-inset-right,0px) + 20px)) calc(24px + env(safe-area-inset-bottom,0px)) 26px;
+  overflow-y:auto; box-shadow:-24px 0 60px -20px rgba(0,0,0,.45);
+  animation:slide .24s ease both;
+}
+@keyframes slide{from{transform:translateX(24px); opacity:.4}to{transform:none; opacity:1}}
+@media (max-width:640px){
+  .drawer{top:auto; left:0; width:auto; max-height:86vh; border-left:0; border-top:1px solid var(--line); border-radius:20px 20px 0 0;
+    padding:20px max(20px, env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px, env(safe-area-inset-left,0px));
+    animation-name:sheet}
+  @keyframes sheet{from{transform:translateY(30px); opacity:.4}to{transform:none; opacity:1}}
+}
+.x{position:absolute; top:calc(16px + env(safe-area-inset-top,0px)); right:max(16px, env(safe-area-inset-right,0px)); border:1.5px solid var(--line); background:var(--surface); color:var(--fg); border-radius:999px; padding:7px 12px; font:700 12px/1 var(--f-body); cursor:pointer}
+@media (max-width:640px){ .x{top:16px} }
+.d-band{margin-bottom:16px}
+.drawer h2{font:800 22px/1.15 var(--f-display); margin:0 0 8px; padding-right:72px}
+.d-mission{margin:0 0 18px; font-size:15.5px; color:var(--muted)}
+.facts{display:grid; grid-template-columns:auto 1fr; gap:16px 20px; align-items:start; padding:16px; background:var(--surface-2); border-radius:14px}
+.fact-k{font:600 11px/1.2 var(--f-mono); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:6px}
+.fact-n{font:800 30px/1 var(--f-display); font-variant-numeric:tabular-nums}
+.fact-s{font-size:13px; color:var(--muted); margin-top:4px; max-width:22ch}
+.chips{display:flex; flex-wrap:wrap; gap:6px}
+.chip{font:600 12px/1 var(--f-mono); border:1.5px solid var(--line); border-radius:999px; padding:6px 10px; color:var(--muted)}
+.chip.on{background:var(--c); border-color:var(--c); color:var(--ink)}
+.drawer h3{font:600 11px/1 var(--f-mono); letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:24px 0 10px}
+.tasks{margin:0; padding:0; list-style:none; display:grid; gap:10px}
+.tasks li{display:grid; grid-template-columns:14px 1fr; gap:10px; font-size:15px; line-height:1.45}
+.tasks li::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--c); margin-top:7px}
+.tip{margin-top:22px; padding:14px 16px; border-radius:12px; border:1.5px dashed var(--c); font-size:14.5px}
+.tip b{display:block; font:600 11px/1 var(--f-mono); letter-spacing:.12em; text-transform:uppercase; margin-bottom:6px; color:var(--muted)}
+.dnav{display:flex; justify-content:space-between; gap:10px; margin-top:24px}
+.navb{border:1.5px solid var(--line); background:transparent; color:var(--fg); border-radius:999px; padding:9px 14px; font:700 13px/1 var(--f-body); cursor:pointer; max-width:48%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.navb:hover{border-color:var(--fg)}
+.navb[disabled]{opacity:.35; cursor:default}
+
+@media (prefers-reduced-motion:reduce){
+  .roles.open li,.drawer{animation:none}
+}
+@media (max-width:560px){
+  .actions{margin-left:0}
+  .seg{width:100%}
+  .seg span{padding:8px 10px; font-size:13px}
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Productora de fiestas · Vida nocturna joven</p>
+    <h1>¿Quién hace qué en una noche de fiesta?</h1>
+    <p class="intro">Organigrama de una productora de fiestas juveniles al estilo Bresh. <b>Toca un área</b> para desplegar su equipo, <b>toca un cargo</b> para ver sus funciones y <b>cambia la escala</b> para ver cuántas personas necesitas. Escribe el nombre de quien lidera cada área; se queda guardado en tu navegador.</p>
+  </header>
+
+  <div class="controls">
+    <fieldset>
+      <legend class="ctl-label">Tamaño de la fiesta</legend>
+      <div class="seg" role="radiogroup">
+        <label><input type="radio" name="scale" id="scale-s" value="s"><span>Pequeña<small>hasta 300</small></span></label>
+        <label><input type="radio" name="scale" id="scale-m" value="m" checked><span>Mediana<small>300 – 1 000</small></span></label>
+        <label><input type="radio" name="scale" id="scale-l" value="l"><span>Grande<small>más de 1 000</small></span></label>
+      </div>
+    </fieldset>
+    <div>
+      <span class="ctl-label">Equipo de la noche</span>
+      <div class="team"><span class="team-n" id="team-n">86</span><span class="team-t">personas, contando proveedores y RRPP. Cifra referencial.</span></div>
+    </div>
+    <div class="actions">
+      <button class="btn" id="open-all" type="button">Desplegar todo</button>
+      <button class="btn" id="close-all" type="button">Plegar todo</button>
+    </div>
+  </div>
+
+  <section class="chart" aria-label="Organigrama">
+    <div class="dg-row">
+      <div class="dg">
+        <button class="dg-btn" id="dg-btn" type="button"><strong>Dirección general</strong><em>Productor/a general</em></button>
+        <input class="who" id="who-dg" type="text" placeholder="+ Nombre" aria-label="Nombre de quien ocupa la dirección general" autocomplete="off">
+      </div>
+    </div>
+    <div class="stem" aria-hidden="true"></div>
+    <ul class="areas" id="areas"></ul>
+  </section>
+
+  <section class="when" aria-labelledby="when-h">
+    <h2 id="when-h">¿Cuándo trabaja cada área?</h2>
+    <p class="sub">La noche es solo una parte. Finanzas, comercial y marketing arrancan semanas antes; producción, barra y seguridad llegan a su pico el día del evento.</p>
+    <div class="tscroll">
+      <table class="heat" id="heat"></table>
+    </div>
+    <div class="legend" aria-hidden="true">
+      <span><i class="cell lv0"></i>Sin carga</span>
+      <span><i class="cell lv1"></i>Baja</span>
+      <span><i class="cell lv2"></i>Media</span>
+      <span><i class="cell lv3"></i>Pico</span>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div>
+      <h3>Cómo leer las cifras</h3>
+      <p>Las cantidades por cargo son una referencia para planificar, no una norma. El aforo autorizado y las condiciones de seguridad que fije la municipalidad en su evaluación mandan sobre cualquier número de esta página. En una fiesta pequeña varias áreas se fusionan: verás qué cargo asume cada tarea.</p>
+    </div>
+    <div>
+      <h3>De dónde salen los ejemplos de Bresh</h3>
+      <ul>
+        <li><a href="https://thesource.com/2026/08/26/how-bresh-is-turning-music-and-culture-into-a-global-movement/" target="_blank" rel="noopener">The Source: más de 500 eventos al año</a></li>
+        <li><a href="https://batimes.com.ar/news/amp/economy/bresh-plans-la-office-private-equity-partnership-for-more-global-growth.phtml" target="_blank" rel="noopener">Buenos Aires Times: props y expansión</a></li>
+        <li><a href="https://www.noticiasdenavarra.com/cultura/2024/10/11/bresh-fiesta-linda-mundo-llega-8796527.amp.html" target="_blank" rel="noopener">Noticias de Navarra: fiesta pensada para redes</a></li>
+        <li><a href="https://www.publimetro.com.mx/entretenimiento/2023/01/19/bresh-la-fiesta-mas-linda-del-mundo-llega-a-mexico-boletos-y-fechas/" target="_blank" rel="noopener">Publimetro: repertorio adaptado a cada ciudad</a></li>
+        <li><a href="https://www.abc.com.py/brandlab/2023/04/05/miller-presenta-la-fiesta-mas-linda-del-mundo/" target="_blank" rel="noopener">ABC Color: alianza con una cervecera</a></li>
+        <li><a href="https://nuevecuatrouno.com/2023/05/16/fiesta-bresh-logrono-24-junio-palacio-deportes/" target="_blank" rel="noopener">Nuevecuatrouno: caramelos y glitter bar</a></li>
+      </ul>
+    </div>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="d-title" hidden>
+  <button class="x" id="d-close" type="button">Cerrar</button>
+  <div class="d-band" id="d-band"></div>
+  <h2 id="d-title"></h2>
+  <p class="d-mission" id="d-mission"></p>
+  <div class="facts">
+    <div>
+      <div class="fact-k">Personas</div>
+      <div class="fact-n" id="d-n"></div>
+      <div class="fact-s" id="d-ns"></div>
+    </div>
+    <div>
+      <div class="fact-k">Cuándo trabaja</div>
+      <div class="chips" id="d-when"></div>
+    </div>
+  </div>
+  <h3>Qué hace</h3>
+  <ul class="tasks" id="d-tasks"></ul>
+  <div class="tip" id="d-tip"></div>
+  <div class="dnav">
+    <button class="navb" id="d-prev" type="button">← Anterior</button>
+    <button class="navb" id="d-next" type="button">Siguiente →</button>
+  </div>
+</aside>
+
+<script>
+(function(){
+const SCALE_TXT = {s:"fiesta pequeña", m:"fiesta mediana", l:"fiesta grande"};
+const DG_NAME = "Dirección general";
+const FIN = "Director/a de finanzas";
+
+const DG = {
+  name:"Dirección general", area:"Toda la productora",
+  mission:"Es la cabeza de la marca. Decide qué fiesta se hace, dónde, cuándo y con cuánto dinero, y es la única voz que manda cuando algo sale mal en la noche.",
+  n:{s:1,m:1,l:1}, when:["antes","noche","despues"],
+  tasks:[
+    "Define el concepto de la marca y el público al que apunta",
+    "Elige fecha, local y aforo, y negocia con el dueño del local",
+    "Aprueba presupuesto, precios y sponsors principales",
+    "La noche del evento toma las decisiones críticas: cerrar puerta por aforo, parar la música, evacuar",
+    "Lidera la reunión de cierre: qué funcionó y qué se cambia en la próxima edición"
+  ],
+  tip:"Productoras como Bresh trabajan con un equipo central que cuida la marca y el estándar, y equipos locales que ejecutan en cada ciudad. Tu dirección general cumple ese rol central."
+};
+
+const AREAS = [
+ {id:"prod", label:"Producción", full:"Producción y operaciones", color:"--c-prod", lead:"Jefe/a de producción", leadN:{s:1,m:1,l:1},
+  mission:"Convierte la idea en una noche que funciona: local, técnica, montaje, horarios y desmontaje.",
+  leadTasks:["Plano del evento: escenario, barras, baños, salidas y zona VIP","Cotiza y contrata proveedores técnicos y de montaje","Cronograma de montaje y prueba técnica completa antes de abrir puertas","Responsable del desmontaje y de devolver el local en buen estado"],
+  leadTip:"Visita el local con el proveedor técnico antes de firmar. Corriente eléctrica, accesos de carga y salidas de emergencia definen qué fiesta cabe ahí.",
+  heat:[1,2,2,3,3,2],
+  roles:[
+   {name:"Stage manager / jefe/a de pista", n:{s:0,m:1,l:2}, by:"Jefe/a de producción", when:["antes","noche"],
+    tasks:["Arma el runsheet: horario minuto a minuto de la noche","Da las entradas a DJ, hosts, personajes y efectos","Coordina por radio con barra, seguridad y puerta","Asegura que la hora pico pase a la hora planeada"],
+    tip:"En la cabina da órdenes una sola persona. Si todos mandan, nadie manda."},
+   {name:"Sonido, luces y pantallas", n:{s:1,m:2,l:4}, when:["antes","noche","despues"], note:"Suele ser un proveedor externo",
+    tasks:["Contrata equipo según el rider del DJ y el tamaño del local","Prueba de sonido y luces antes de abrir puertas","Plan B de energía: grupo electrógeno o circuito separado","Opera luces y visuales durante el show"],
+    tip:"Exige que un técnico del proveedor se quede toda la noche, no solo durante el montaje."},
+   {name:"Ambientación y props", n:{s:1,m:2,l:4}, when:["antes","noche","despues"],
+    tasks:["Decoración según la temática de la edición","Props de impacto: inflables gigantes, confeti, globos, humo","Photo spot para que la gente se tome fotos y las suba","Monta y retira sin dañar el local"],
+    tip:"Bresh se hizo conocida por sus props creativos, que se volvieron virales en redes. Un elemento icónico por edición vale más que diez decoraciones genéricas."},
+   {name:"Logística y montaje", n:{s:2,m:4,l:8}, when:["antes","noche","despues"],
+    tasks:["Transporte de equipos, props y bebidas","Armado y desarmado de tarimas, vallas, barras y señalética","Baños portátiles y agua si el espacio es abierto","Control de todo lo que entra y sale del local"],
+    tip:"Haz una lista de carga con fotos. Al desmontar a las 5 a.m., nadie recuerda qué era de quién."},
+   {name:"Limpieza", n:{s:1,m:3,l:6}, when:["noche","despues"],
+    tasks:["Baños limpios y abastecidos cada hora","Recojo de vasos y basura en pista y barras","Limpieza final y entrega del local","Separación de residuos reciclables"],
+    tip:"Los baños son lo que más se comenta mal en redes al día siguiente. Asigna a alguien solo para eso."}
+  ]},
+ {id:"show", label:"Show", full:"Show y experiencia", color:"--c-show", lead:"Director/a creativo/a", leadN:{s:0,m:1,l:1}, leadBy:DG_NAME,
+  mission:"Lo que hace que tu fiesta sea esa fiesta y no una discoteca más: música, momentos, personajes y detalles que la gente graba.",
+  leadTasks:["Define el concepto y la temática de cada edición","Cura la música y diseña la hora pico (por ejemplo, 1:30 a.m. con confeti y personajes)","Cuida que todo se vea bien en cámara","Da el brief estético a ambientación y marketing"],
+  leadTip:"Bresh se diseña para que su público genere contenido en TikTok e Instagram. Piensa cada momento del show como un video de 15 segundos.",
+  heat:[2,2,1,2,3,1],
+  roles:[
+   {name:"Concepto y temática", n:{s:0,m:0,l:1}, by:"Director/a creativo/a", bySmall:DG_NAME, when:["antes"],
+    tasks:["Nombre e idea de cada edición: Halloween, vieja escuela, fin de ciclo, Y2K","Dress code y paleta para que el público participe","Momentos guionados: apertura, hora pico, cierre","Brief para ambientación, marketing y DJ"],
+    tip:"La temática le da a la gente una razón para volver: no es la misma fiesta, es la siguiente edición."},
+   {name:"DJs y line-up", n:{s:1,m:2,l:3}, when:["antes","noche"],
+    tasks:["DJ residente que conoce al público local","Setlist que cruza reggaetón, pop latino, cumbia, electrónica y vieja escuela","Un DJ o artista invitado de fuera como gancho en fechas especiales","Horarios de cada set y transición entre DJs"],
+    tip:"En Bresh el DJ adapta el repertorio a lo que más suena en cada ciudad. Tu residente debe leer a tu público, no copiar la playlist de otra fiesta."},
+   {name:"Hosts y animadores", n:{s:1,m:2,l:4}, when:["noche"],
+    tasks:["Reciben al público y crean ambiente desde la fila","Dinámicas en pista y en escenario","Anuncian los momentos clave del show","Suben gente al escenario de forma controlada"],
+    tip:"Un buen host es carismático y también obedece al runsheet. Ensaya con él los momentos clave."},
+   {name:"Personajes y performers", n:{s:0,m:3,l:8}, by:"Hosts y animadores", when:["noche"],
+    tasks:["Personajes o botargas que aparecen en la hora pico","Bailarines o performers temáticos","Fotos e interacción con el público","Rotaciones cortas para no agotarse"],
+    tip:"Las botargas dan calor y pesan. Planifica descansos y agua, o el personaje se apaga a la mitad de la noche."},
+   {name:"Activaciones y merch", n:{s:1,m:2,l:4}, when:["antes","noche"],
+    tasks:["Caramelos o detalle de bienvenida en la puerta","Glitter bar o estación de maquillaje","Photobooth con marco de la edición","Venta de merch: pulseras, gorros, polos"],
+    tip:"Bresh usa detalles como caramelos de bienvenida y un glitter bar. Son baratos y hacen que la experiencia empiece desde la puerta."}
+  ]},
+ {id:"mkt", label:"Marketing", full:"Marketing y contenido", color:"--c-mkt", lead:"Director/a de marketing", leadN:{s:1,m:1,l:1},
+  mission:"Llena la fiesta antes de que se abra la puerta y convierte cada noche en contenido para vender la siguiente.",
+  leadTasks:["Plan de lanzamiento por fases: teaser, lanzamiento, preventas, últimas entradas","Presupuesto de publicidad pagada en redes","Mide ventas por canal: redes, RRPP, creadores","Cuida el tono y la estética de la marca"],
+  leadTip:"Anuncia la próxima fecha mientras la gente todavía está publicando fotos de la última.",
+  heat:[1,2,3,3,2,2],
+  roles:[
+   {name:"Community manager", n:{s:0,m:1,l:2}, by:"Director/a de marketing", when:["antes","noche","despues"],
+    tasks:["Calendario de publicaciones por fase de venta","Responde mensajes y comentarios rápido","Stories en vivo la noche del evento","Publica la próxima fecha al día siguiente"],
+    tip:"La mayoría de preguntas son las mismas: precio, hora, edad mínima, dress code. Ten respuestas guardadas."},
+   {name:"Diseño gráfico", n:{s:0,m:1,l:2}, by:"Director/a de marketing", when:["antes"],
+    tasks:["Identidad de cada edición: flyer, stories, reels","Señalética del local: barras, baños, salidas","Diseño de pulseras, entradas y credenciales","Plantillas para que los RRPP compartan"],
+    tip:"Una plantilla de flyer bien hecha te ahorra horas en cada edición. Cambia la temática, no el sistema."},
+   {name:"Foto y video", n:{s:1,m:2,l:4}, when:["noche","despues"],
+    tasks:["Cobertura en vivo para stories","Fotos del público para que se etiqueten","Aftermovie o recap en las primeras 48 horas","Banco de contenido para vender la próxima fecha"],
+    tip:"Cada foto en la que alguien se etiqueta es publicidad gratis para la próxima edición."},
+   {name:"Creadores e influencers", n:{s:0,m:1,l:2}, by:"Director/a de marketing", when:["antes","noche"],
+    tasks:["Lista de creadores locales y universitarios","Cortesías a cambio de contenido acordado por escrito","Embajadores por universidad o instituto","Mide qué creador trajo más ventas con códigos propios"],
+    tip:"En una ciudad mediana, un estudiante con buena red vende más que un influencer de Lima."}
+  ]},
+ {id:"com", label:"Comercial", full:"Comercial y ventas", color:"--c-com", lead:"Director/a comercial", leadN:{s:0,m:1,l:1}, leadBy:"Director/a de marketing",
+  mission:"Convierte la expectativa en dinero: entradas, zonas VIP y sponsors.",
+  leadTasks:["Precios por etapa junto con finanzas","Red de RRPP, metas y comisiones","Meta de ventas semanal y reporte diario la semana del evento","Negociación con sponsors"],
+  leadTip:"Si a dos semanas de la fecha no llevas la mitad de la meta, ajusta: más RRPP, una promo de grupo o un anuncio del invitado sorpresa.",
+  heat:[2,3,3,3,2,1],
+  roles:[
+   {name:"Ticketing", n:{s:1,m:1,l:2}, when:["antes","noche","despues"],
+    tasks:["Venta por etapas: early bird, preventa 1, preventa 2, puerta","Plataforma online con código QR y control de duplicados","Conteo diario de ventas contra la meta","Cortar la venta al llegar al aforo autorizado"],
+    tip:"Subir el precio por etapas premia a quien compra temprano y te da caja para pagar adelantos a proveedores."},
+   {name:"Relacionistas públicos (RRPP)", n:{s:3,m:8,l:20}, when:["antes","noche"],
+    tasks:["Cada RRPP vende con su propio código o lista","Cubren universidades, institutos, promociones y grupos de amigos","Comisión por entrada vendida, pagada después del evento","Ranking de ventas con premios para los mejores"],
+    tip:"Paga las comisiones a tiempo. Un RRPP que cobró rápido vuelve a vender en la próxima edición."},
+   {name:"Sponsors y alianzas", n:{s:0,m:1,l:2}, by:DG_NAME, when:["antes","despues"],
+    tasks:["Propuesta de auspicio con público y alcance estimados","Cervecera, bebida energética, marcas de ropa o comida local","Canje de producto, efectivo o descuentos para el público","Reporte al sponsor después del evento con fotos y cifras"],
+    tip:"Bresh se alía con marcas de bebida; en Paraguay, Miller fue su sponsor. Empieza con un distribuidor local que te dé producto a consignación."},
+   {name:"VIP y boxes", n:{s:0,m:1,l:2}, by:"Ticketing", when:["antes","noche"],
+    tasks:["Zonas preferentes con mejor vista","Paquetes con botella o consumo incluido","Reservas con pago adelantado","Atención dedicada durante la noche"],
+    tip:"El VIP da margen alto con poco espacio. No vendas más mesas de las que puedes atender bien."}
+  ]},
+ {id:"bar", label:"Barra", full:"Barra y consumo", color:"--c-bar", lead:"Jefe/a de barra", leadN:{s:1,m:1,l:1},
+  mission:"La barra suele ser la otra mitad del ingreso. Si falla, la fila larga arruina la noche.",
+  leadTasks:["Carta corta y rápida: pocas opciones y precios redondos","Cálculo de stock por asistente","Acuerdo con proveedor o sponsor de bebidas","Cierre de inventario y entrega de caja a finanzas"],
+  leadTip:"Separar quién cobra de quién sirve reduce la fila más que poner otra barra.",
+  heat:[0,1,1,2,3,1],
+  roles:[
+   {name:"Bartenders", n:{s:3,m:8,l:18}, when:["noche"],
+    tasks:["Servir rápido una carta corta","Pedir DNI ante la duda: no se vende alcohol a menores de 18","No servir a personas en evidente estado de ebriedad","Mantener la barra limpia y abastecida"],
+    tip:"La Ley 28681 prohíbe vender o regalar alcohol a menores de 18. Una multa o un cierre cuesta más que toda la noche."},
+   {name:"Caja o cashless", n:{s:1,m:3,l:6}, when:["noche","despues"],
+    tasks:["Cobro con tickets de consumo, pulsera cashless o POS","Fondo de cambio y arqueo por turno","Conciliar ventas de caja con salida de stock","Cierre de caja con finanzas"],
+    tip:"Cuanto menos efectivo circule, menos errores y menos riesgo de robo."},
+   {name:"Almacén e inventario", n:{s:1,m:2,l:3}, when:["antes","noche","despues"],
+    tasks:["Calcular stock con los datos de la edición anterior","Hielo, vasos y agua en cantidad suficiente","Reponer las barras antes de la hora pico","Conteo final de lo vendido y lo sobrante"],
+    tip:"Lo que más se acaba no es el trago, es el hielo. Calcúlalo aparte."},
+   {name:"Comida", n:{s:0,m:1,l:2}, by:"Jefe/a de barra", note:"Suele ser un tercero", when:["noche"],
+    tasks:["Alianza con food truck o local de comida","Punto de agua accesible","Ubicación lejos de la pista y cerca de la salida","Acuerdo por comisión o alquiler del espacio"],
+    tip:"Un salchipapero de confianza en la salida vende solo y la gente se va contenta."}
+  ]},
+ {id:"seg", label:"Seguridad", full:"Seguridad y cuidado", color:"--c-seg", lead:"Jefe/a de seguridad", leadN:{s:1,m:1,l:1},
+  mission:"Nadie recuerda una fiesta segura, pero todos recuerdan una que no lo fue. Protege al público, al staff y a la marca.",
+  leadTasks:["Plan de seguridad y evacuación que pide la municipalidad","Coordina con la empresa de seguridad, la PNP y el serenazgo","Define puntos críticos: puerta, escenario, barras, baños, salidas","Lleva el registro de incidentes de la noche"],
+  leadTip:"Comparte radio o canal directo con la dirección general. Las decisiones de seguridad no esperan.",
+  heat:[0,1,1,2,3,1],
+  roles:[
+   {name:"Seguridad privada", n:{s:4,m:10,l:24}, when:["noche"], note:"Empresa contratada",
+    tasks:["Contratar una empresa formal autorizada por SUCAMEC","Cubrir puerta, escenario, barras, baños y salidas","Rondas por la pista y las zonas oscuras","Actuar según el plan de seguridad aprobado"],
+    tip:"Pide a la empresa su autorización vigente y el carné de cada agente. Es lo que te van a pedir si pasa algo."},
+   {name:"Puerta y control de acceso", n:{s:3,m:6,l:12}, when:["noche"],
+    tasks:["Revisión de DNI: solo mayores de 18","Escaneo de QR y colocación de pulseras","Revisión de bolsos y objetos prohibidos","Conteo del aforo en tiempo real"],
+    tip:"Abre puertas con más personal del que crees necesario. La primera hora define la fila."},
+   {name:"Primeros auxilios", n:{s:1,m:2,l:4}, when:["noche"],
+    tasks:["Tópico con personal de salud y botiquín","Agua gratis y visible","Protocolo de traslado y contacto con ambulancia","Registro de cada atención"],
+    tip:"Ubica el tópico cerca de una salida para poder sacar a alguien sin cruzar la pista."},
+   {name:"Punto de cuidado", n:{s:0,m:2,l:3}, by:"Jefe/a de seguridad", when:["antes","noche"],
+    tasks:["Espacio identificado para reportar acoso o pedir ayuda","Personal capacitado para acompañar y escalar casos","Mensaje de tolerancia cero en redes y en el local","Coordinación con seguridad para retirar a agresores"],
+    tip:"Bresh se presenta como un espacio inclusivo y seguro. Esa promesa se cumple con personas y protocolos, no con un post."},
+   {name:"Salida segura", n:{s:0,m:1,l:2}, by:"Jefe/a de seguridad", when:["noche"],
+    tasks:["Acuerdo con empresas de taxi formales en la salida","Iluminación y orden en la salida","Coordinación con serenazgo y PNP","Salida escalonada al cierre"],
+    tip:"La fiesta termina cuando la gente llega a casa. Un buen cierre evita la mala noticia del lunes."}
+  ]},
+ {id:"fin", label:"Finanzas", full:"Administración, finanzas y legal", color:"--c-fin", lead:"Director/a de finanzas", leadN:{s:1,m:1,l:1},
+  mission:"Que la fiesta sea rentable y legal: presupuesto, caja, permisos, contratos y liquidación.",
+  leadTasks:["Presupuesto y punto de equilibrio de cada edición","Flujo de caja: adelantos a proveedores contra ingresos de preventa","Permisos, contratos y seguros","Liquidación del evento y reparto entre socios"],
+  leadTip:"Antes de anunciar la fecha, calcula cuántas entradas necesitas vender para no perder. Si ese número te asusta, cambia el local o el presupuesto.",
+  heat:[3,2,2,3,2,3],
+  roles:[
+   {name:"Presupuesto y precios", n:{s:0,m:1,l:1}, by:FIN, when:["antes"],
+    tasks:["Presupuesto por área con proveedores cotizados","Punto de equilibrio: cuántas entradas cubren los costos","Escenarios: lleno, media sala, lluvia o cancelación","Precios por etapa junto con comercial"],
+    tip:"Separa costos fijos (local, sonido, seguridad) de variables (barra, comisiones). Los fijos son los que te hunden si no vendes."},
+   {name:"Tesorería y cierre", n:{s:0,m:1,l:2}, by:FIN, when:["antes","noche","despues"],
+    tasks:["Programa de pagos a proveedores","Fondos de cambio para barra y puerta","Conciliar plataforma de entradas, caja y POS","Liquidación del evento en las 72 horas siguientes"],
+    tip:"Cierra cada edición con un estado de resultados de una página. Es la base para negociar con sponsors y socios."},
+   {name:"Permisos y trámites", n:{s:0,m:1,l:1}, by:FIN, when:["antes"],
+    tasks:["Autorización municipal para espectáculo público no deportivo","Evaluación de seguridad (ECSE o ITSE) y plan de seguridad","Licencias de música con APDAYC y UNIMPRO","Impuesto municipal a espectáculos y comprobantes de pago"],
+    tip:"Empieza los trámites con semanas de anticipación. Sin autorización no hay fiesta, aunque las entradas estén vendidas."},
+   {name:"Contratos y seguros", n:{s:0,m:0,l:1}, by:FIN, when:["antes"],
+    tasks:["Contrato con el local: aforo, horario, garantía, daños","Contratos con DJ, proveedores y sponsors","Póliza de responsabilidad civil para los asistentes","Política de reembolso si se cancela"],
+    tip:"Todo acuerdo por escrito, aunque sea un mensaje confirmado. En la noche no hay tiempo para discutir qué se prometió."}
+  ]},
+ {id:"per", label:"Personal", full:"Personal y staff", color:"--c-per", lead:"Coordinador/a de personal", leadN:{s:0,m:1,l:1}, leadBy:FIN,
+  mission:"Recluta, capacita y coordina a todas las personas que trabajan esa noche, y cuida que quieran volver.",
+  leadTasks:["Organigrama de la noche con nombres y teléfonos","Convocatoria y selección del staff","Manual de staff y briefing previo","Turnos, pagos y evaluación posterior"],
+  leadTip:"El staff que vuelve edición tras edición es tu mayor ventaja: ya sabe dónde está todo y cómo reaccionar.",
+  heat:[0,1,2,3,3,1],
+  roles:[
+   {name:"Reclutamiento", n:{s:0,m:0,l:1}, by:"Coordinador/a de personal", bySmall:FIN, when:["antes"],
+    tasks:["Convocatoria para barra, puerta, limpieza y apoyo","Entrevista corta y prueba en la primera fecha","Base de datos de staff confiable","Referencias de otros eventos"],
+    tip:"Recluta más gente de la que necesitas: siempre alguien falla el mismo día."},
+   {name:"Capacitación y briefing", n:{s:0,m:0,l:2}, by:"Coordinador/a de personal", bySmall:DG_NAME, when:["antes","noche"],
+    tasks:["Manual de una página por puesto","Briefing dos horas antes de abrir puertas","Códigos de radio y a quién reportar","Qué hacer ante una emergencia o una pelea"],
+    tip:"Un briefing de 20 minutos evita la mitad de los problemas de la noche."},
+   {name:"Turnos y asistencia", n:{s:1,m:1,l:2}, when:["antes","noche"],
+    tasks:["Hora de llegada por puesto","Registro de asistencia y credencial al llegar","Relevos y descansos durante la noche","Comida y agua para el staff"],
+    tip:"El staff con hambre a las 3 a.m. trabaja mal. Presupuesta su comida."},
+   {name:"Credenciales y uniformes", n:{s:0,m:1,l:1}, by:"Turnos y asistencia", when:["antes","noche"],
+    tasks:["Credencial por zona: pista, barra, backstage, cabina","Polo o chaleco de color distinto por área","Entrega y devolución de radios","Lista de quién entra a cada zona"],
+    tip:"Usa el color de cada área del organigrama en los chalecos. Así cualquiera sabe a quién preguntar."},
+   {name:"Pagos al staff", n:{s:0,m:0,l:1}, by:FIN, when:["despues"],
+    tasks:["Tarifa por noche acordada por escrito","Pago puntual, como máximo una semana después","Recibos o comprobantes según corresponda","Evaluación: quién vuelve en la próxima fecha"],
+    tip:"Pagar tarde a tu staff es la forma más rápida de quedarte sin staff."}
+  ]}
+];
+
+const PHASES = ["8 semanas antes","4 semanas antes","2 semanas antes","Semana del evento","La noche","Después"];
+const WHEN_TXT = {antes:"Antes", noche:"La noche", despues:"Después"};
+const LV_TXT = ["sin carga","baja","media","pico"];
+
+let scale = "m";
+const open = new Set(["per"]);
+let names = {};
+const STORE = "org-productora-nombres-v1";
+try{ names = JSON.parse(localStorage.getItem(STORE) || "{}") || {}; }catch(e){ names = {}; }
+function saveNames(){ try{ localStorage.setItem(STORE, JSON.stringify(names)); }catch(e){} }
+
+function el(tag, cls, txt){ const e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; }
+function areaTotal(a){ return a.leadN[scale] + a.roles.reduce((s,r)=>s+r.n[scale],0); }
+function byFor(r){ return (scale==="s" && r.bySmall) ? r.bySmall : r.by; }
+function metaFor(n, r){
+  if(n>0) return (n===1 ? "1 persona" : n+" personas") + (r && r.note ? " · "+r.note.toLowerCase() : "");
+  return "lo asume: "+byFor(r);
+}
+
+/* ---------- Render organigrama ---------- */
+const areasEl = document.getElementById("areas");
+function renderAreas(){
+  areasEl.textContent = "";
+  AREAS.forEach(a=>{
+    const li = el("li","area"); li.style.setProperty("--c", "var("+a.color+")");
+    const head = el("button","head"); head.type="button"; head.id="head-"+a.id;
+    head.setAttribute("aria-controls","roles-"+a.id);
+    const band = el("span","band"); band.append(el("span",null,a.label));
+    const n = el("span","n"); n.dataset.area=a.id; band.append(n);
+    const lead = el("span","lead"); lead.dataset.leadArea=a.id;
+    const chev = el("span","chev");
+    head.append(band, lead, chev);
+    head.addEventListener("click", ()=>{ open.has(a.id)?open.delete(a.id):open.add(a.id); syncOpen(); });
+
+    const who = el("input","who"); who.type="text"; who.id="who-"+a.id; who.placeholder="+ Nombre"; who.autocomplete="off";
+    who.setAttribute("aria-label","Nombre de quien lidera "+a.full);
+    who.value = names[a.id] || "";
+    who.addEventListener("input", ()=>{ names[a.id]=who.value; saveNames(); });
+
+    const ul = el("ul","roles"); ul.id="roles-"+a.id;
+    const items = [{lead:true}].concat(a.roles);
+    items.forEach((r,i)=>{
+      const rli = el("li");
+      const b = el("button","role"+(r.lead?" is-lead":"")); b.type="button";
+      b.dataset.area=a.id; b.dataset.idx=i;
+      const dot = el("span","dot"); dot.setAttribute("aria-hidden","true");
+      const txt = el("span");
+      txt.append(el("span","rname", r.lead ? a.lead+" · líder" : r.name), el("span","meta"));
+      b.append(dot, txt);
+      b.addEventListener("click", ()=>openDrawer(a.id, i, b));
+      rli.append(b); ul.append(rli);
+    });
+    li.append(head, who, ul);
+    areasEl.append(li);
+  });
+  syncScale(); syncOpen();
+}
+
+function syncScale(){
+  let total = DG.n[scale];
+  AREAS.forEach(a=>{
+    const t = areaTotal(a); total += t;
+    const n = areasEl.querySelector('.n[data-area="'+a.id+'"]'); n.textContent = t;
+    const lead = areasEl.querySelector('[data-lead-area="'+a.id+'"]');
+    lead.textContent = (a.leadN[scale]===0) ? a.lead+" · lo asume "+a.leadBy.toLowerCase() : a.lead;
+    const btns = areasEl.querySelectorAll('.role[data-area="'+a.id+'"]');
+    btns.forEach(b=>{
+      const i = +b.dataset.idx;
+      const r = i===0 ? {n:a.leadN, by:a.leadBy} : a.roles[i-1];
+      const cnt = r.n[scale];
+      b.classList.toggle("absorbed", cnt===0);
+      b.querySelector(".meta").textContent = i===0 && cnt>0 ? "Lidera el área" : metaFor(cnt, r);
+    });
+  });
+  document.getElementById("team-n").textContent = total;
+  if(current) fillDrawer();
+}
+
+function syncOpen(){
+  AREAS.forEach(a=>{
+    const isOpen = open.has(a.id);
+    const head = document.getElementById("head-"+a.id);
+    const ul = document.getElementById("roles-"+a.id);
+    head.setAttribute("aria-expanded", isOpen ? "true":"false");
+    head.querySelector(".chev").textContent = isOpen ? "Ocultar equipo ▴" : "Ver equipo ("+(a.roles.length+1)+") ▾";
+    if(isOpen && ul.hidden){ ul.hidden=false; ul.classList.remove("open"); void ul.offsetWidth; ul.classList.add("open"); }
+    if(!isOpen){ ul.hidden=true; ul.classList.remove("open"); }
+  });
+}
+
+document.querySelectorAll('input[name="scale"]').forEach(r=>{
+  r.addEventListener("change", ()=>{ if(r.checked){ scale=r.value; syncScale(); } });
+});
+document.getElementById("open-all").addEventListener("click", ()=>{ AREAS.forEach(a=>open.add(a.id)); syncOpen(); });
+document.getElementById("close-all").addEventListener("click", ()=>{ open.clear(); syncOpen(); });
+
+const dgWho = document.getElementById("who-dg");
+dgWho.value = names.dg || "";
+dgWho.addEventListener("input", ()=>{ names.dg=dgWho.value; saveNames(); });
+
+/* ---------- Ficha del cargo ---------- */
+const drawer = document.getElementById("drawer"), scrim = document.getElementById("scrim");
+let current = null, opener = null;
+
+function entryFor(areaId, idx){
+  if(areaId==="dg") return {area:null, item:DG, isLead:true};
+  const a = AREAS.find(x=>x.id===areaId);
+  if(idx===0) return {area:a, isLead:true, item:{name:a.lead, mission:a.mission, n:a.leadN, by:a.leadBy, when:["antes","noche","despues"], tasks:a.leadTasks, tip:a.leadTip}};
+  return {area:a, isLead:false, item:a.roles[idx-1]};
+}
+
+function fillDrawer(){
+  const {areaId, idx} = current;
+  const {area, item, isLead} = entryFor(areaId, idx);
+  drawer.style.setProperty("--c", area ? "var("+area.color+")" : "var(--dg-ring)");
+  const bandWrap = document.getElementById("d-band"); bandWrap.textContent="";
+  const band = el("span","band", area ? area.full : "Dirección general");
+  bandWrap.append(band);
+  document.getElementById("d-title").textContent = item.name;
+  const mission = document.getElementById("d-mission");
+  if(isLead && item.mission){ mission.hidden=false; mission.textContent=item.mission; } else { mission.hidden=true; }
+  const cnt = item.n[scale];
+  document.getElementById("d-n").textContent = cnt>0 ? cnt : "—";
+  const ns = document.getElementById("d-ns");
+  if(cnt>0){ ns.textContent = "en una "+SCALE_TXT[scale]+(item.note ? ". "+item.note : ""); }
+  else { ns.textContent = "En una "+SCALE_TXT[scale]+" lo asume: "+byFor(item); }
+  const w = document.getElementById("d-when"); w.textContent="";
+  ["antes","noche","despues"].forEach(k=>{ const c=el("span","chip"+(item.when.includes(k)?" on":""), WHEN_TXT[k]); w.append(c); });
+  const tl = document.getElementById("d-tasks"); tl.textContent="";
+  item.tasks.forEach(t=>tl.append(el("li",null,t)));
+  const tip = document.getElementById("d-tip"); tip.textContent="";
+  tip.append(el("b",null,"Clave"), document.createTextNode(item.tip));
+  const prev = document.getElementById("d-prev"), next = document.getElementById("d-next");
+  if(!area){ prev.hidden=true; next.hidden=true; }
+  else{
+    prev.hidden=false; next.hidden=false;
+    const max = area.roles.length;
+    prev.disabled = idx===0; next.disabled = idx===max;
+    prev.textContent = idx===0 ? "← Anterior" : "← "+(idx-1===0 ? area.lead : area.roles[idx-2].name);
+    next.textContent = idx===max ? "Siguiente →" : (area.roles[idx].name)+" →";
+  }
+}
+
+function openDrawer(areaId, idx, btn){
+  current = {areaId, idx}; opener = btn || opener;
+  fillDrawer();
+  scrim.hidden=false; drawer.hidden=false;
+  drawer.scrollTop = 0;
+  document.getElementById("d-close").focus();
+}
+function closeDrawer(){
+  drawer.hidden=true; scrim.hidden=true; current=null;
+  if(opener && document.contains(opener)) opener.focus();
+}
+document.getElementById("d-close").addEventListener("click", closeDrawer);
+scrim.addEventListener("click", closeDrawer);
+document.getElementById("d-prev").addEventListener("click", ()=>{ if(current && current.idx>0){ current.idx--; fillDrawer(); drawer.scrollTop=0; } });
+document.getElementById("d-next").addEventListener("click", ()=>{ if(!current) return; const a=AREAS.find(x=>x.id===current.areaId); if(a && current.idx<a.roles.length){ current.idx++; fillDrawer(); drawer.scrollTop=0; } });
+document.getElementById("dg-btn").addEventListener("click", e=>openDrawer("dg", 0, e.currentTarget));
+document.addEventListener("keydown", e=>{
+  if(drawer.hidden) return;
+  if(e.key==="Escape"){ closeDrawer(); return; }
+  if(e.key==="Tab"){
+    const f = Array.from(drawer.querySelectorAll("button:not([disabled]):not([hidden])"));
+    if(!f.length) return;
+    const first=f[0], last=f[f.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  }
+});
+
+/* ---------- Mapa de calor ---------- */
+function renderHeat(){
+  const t = document.getElementById("heat");
+  const thead = el("thead"), tr = el("tr");
+  const th0 = el("th",null,"Área"); th0.scope="col"; tr.append(th0);
+  PHASES.forEach((p,i)=>{ const th=el("th", i===4?"ph-night":null, p); th.scope="col"; tr.append(th); });
+  thead.append(tr); t.append(thead);
+  const tb = el("tbody");
+  AREAS.forEach(a=>{
+    const row = el("tr"); row.style.setProperty("--c","var("+a.color+")");
+    const name = el("td","al"); name.append(el("i"), document.createTextNode(a.label)); row.append(name);
+    a.heat.forEach((lv,i)=>{
+      const td = el("td"); const c = el("span","cell lv"+lv, lv===3?"PICO":"");
+      c.append(el("span","sr", PHASES[i]+": "+LV_TXT[lv]));
+      td.append(c); row.append(td);
+    });
+    tb.append(row);
+  });
+  t.append(tb);
+}
+
+renderAreas();
+renderHeat();
+})();
+</script>
+
+</body>
+</html>
